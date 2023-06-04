@@ -7,6 +7,7 @@ const panel = 'active';
 function Thrifts() {
   
   const [choice, setChoice] = useState(panel)
+  
   const handleClick = event => {
     setChoice(event.target.value)
     

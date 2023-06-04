@@ -2,6 +2,8 @@ import React from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikControl from "./FormikControl";
+import {appAx, setAuthJwt} from './AppAxios'
+import { useQuery, useMutation } from "react-query";
 
 const styles = {
   form: {
@@ -12,7 +14,20 @@ const styles = {
   }
 }
 
+const postUser = (user) => {
+  return appAx.post('http://127.0.0.1:8080/api/v1/user/auth/register', user)
+}
+
 function RegisterForm() {
+  // const {isLoading, isError, data, error, refetch} = useQuery(
+  //   'user',
+  //   postUser,
+  //   {
+  //     enabled: false,
+  //   }
+  //   )
+  const {mutate: addUser, isLoading, isError, error, data} = useMutation(postUser)
+  
   const initVal = {
     fname: "",
     lname: "",
@@ -23,7 +38,7 @@ function RegisterForm() {
     gender: "",
     // selectOption: "",
     // checkOptions: [],
-    birthdate: null
+    // birthdate: null
   };
 
   // const checks = [
@@ -50,11 +65,31 @@ function RegisterForm() {
     phone: Yup.number().required('Required'),
     // selectOption: Yup.string().required("Required"),
     // checkOptions: Yup.array().required('Required'),
-    birthdate: Yup.date().required('Required').nullable()
+    // birthdate: Yup.date().required('Required').nullable()
   });
   const onSubmit = (values) => {
-    console.log(values);
+    const {fname, lname, email, gender, password, phone} = values
+    const user = {
+      'fname': fname,
+      'lname': lname,
+      'email': email,
+      'gender': gender,
+      'password': password,
+      'phone': phone
+    }
+    addUser(user)
+    // console.log(values);
   };
+
+  if(isLoading)
+  {
+    return <h2>Loading...</h2>
+  }
+
+  if(isError)
+  {
+    console.log(error)
+  }
 
   return (
     <Formik
@@ -120,12 +155,13 @@ function RegisterForm() {
             name="checkOptions"
           /> */}
 
-          <FormikControl
+          {/* <FormikControl
             control="date"
             label="Date of birth"
             name="birthdate"
-          />
+          /> */}
           <button type="submit" disabled={!formik.isValid || formik.isSubmitting} >Submit</button>
+          <h3>{console.log(data?.data)}</h3>
         </Form>
       )}
     </Formik>

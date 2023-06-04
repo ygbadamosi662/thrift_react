@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
 import Landlord from "./Landlord";
+import {useQuery} from 'react-query'
+import {appAx} from "./AppAxios";
 
 const stylez = (clas) => {
   return {
@@ -48,9 +50,13 @@ function LandingPage({ initChoice }) {
         break;
     }
   };
+
+  const fetch = () => {
+    return appAx.post('http://127.0.0.1:8080/api/v1/user/home')
+  }
   // const initChoice = true;
   const [choice, setChoice] = useState(initChoice);
-
+  const {isError, isLoading, data} = useQuery('home', fetch)
   return (
     <div className="landPage" style={landStyle}>
       <div className="toggle" style={toggleStyle}>
@@ -71,7 +77,8 @@ function LandingPage({ initChoice }) {
         />
         
       </div>
-
+      <div>{data?.data}</div>
+      
       {choice ? <RegisterForm /> : <LoginForm />}
     </div>
   );
