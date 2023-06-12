@@ -1,9 +1,12 @@
 import React from "react";
+import { useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikControl from "./FormikControl";
 import {appAx, setAuthJwt} from './AppAxios'
-import { useQuery, useMutation } from "react-query";
+import { useMutation } from "react-query";
+import { connect } from "react-redux";
+import { logEmail } from "../Redux/user/userActions";
 
 const styles = {
   form: {
@@ -14,19 +17,22 @@ const styles = {
   }
 }
 
+
 const postUser = (user) => {
   return appAx.post('http://127.0.0.1:8080/api/v1/user/auth/register', user)
 }
 
-function RegisterForm() {
-  // const {isLoading, isError, data, error, refetch} = useQuery(
-  //   'user',
-  //   postUser,
-  //   {
-  //     enabled: false,
-  //   }
-  //   )
+function RegisterForm(props) {
+  const {reduxLogEmail, goL} = props;
+  
   const {mutate: addUser, isLoading, isError, error, data} = useMutation(postUser)
+
+  useEffect(() => {
+    if (data?.status === 200) {
+      reduxLogEmail(data?.data.email);
+      goL();
+    }
+  }, [data, reduxLogEmail, goL]);
   
   const initVal = {
     fname: "",
@@ -79,7 +85,7 @@ function RegisterForm() {
     }
     addUser(user)
     // console.log(values);
-  };
+  }
 
   if(isLoading)
   {
@@ -90,6 +96,12 @@ function RegisterForm() {
   {
     console.log(error)
   }
+
+  // if(data?.status === 200)
+  // {
+    
+  // }
+  
 
   return (
     <Formik
@@ -161,11 +173,25 @@ function RegisterForm() {
             name="birthdate"
           /> */}
           <button type="submit" disabled={!formik.isValid || formik.isSubmitting} >Submit</button>
-          <h3>{console.log(data?.data)}</h3>
+          
         </Form>
       )}
     </Formik>
   );
 }
 
-export default RegisterForm;
+
+// const mapStateToProps = state => {
+//   return {
+//     reduxUser: state.user.user,
+//     reduxEmail: state.user.email
+//   }
+// }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    reduxLogEmail: (em) => dispatch(logEmail(em))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(RegisterForm);

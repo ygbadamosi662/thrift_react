@@ -4,6 +4,8 @@ import LoginForm from "./LoginForm";
 import Landlord from "./Landlord";
 import {useQuery} from 'react-query'
 import {appAx} from "./AppAxios";
+import { connect } from "react-redux";
+import { logUser } from "../Redux/user/userActions";
 
 const stylez = (clas) => {
   return {
@@ -54,9 +56,17 @@ function LandingPage({ initChoice }) {
   const fetch = () => {
     return appAx.post('http://127.0.0.1:8080/api/v1/user/home')
   }
-  // const initChoice = true;
+
+  const onRegOk = () => {
+    // setEm(emi)
+    setChoice(false)
+  }
+  
   const [choice, setChoice] = useState(initChoice);
-  const {isError, isLoading, data} = useQuery('home', fetch)
+  // const [em, setEm] = useState("");
+
+  const {isError, isLoading, data} = useQuery('home', fetch);
+  
   return (
     <div className="landPage" style={landStyle}>
       <div className="toggle" style={toggleStyle}>
@@ -79,7 +89,7 @@ function LandingPage({ initChoice }) {
       </div>
       <div>{data?.data}</div>
       
-      {choice ? <RegisterForm /> : <LoginForm />}
+      {choice ? <RegisterForm goL={onRegOk}  /> : <LoginForm />}
     </div>
   );
 }

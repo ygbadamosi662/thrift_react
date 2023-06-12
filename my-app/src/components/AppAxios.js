@@ -7,7 +7,7 @@ const apex = axios.create({
   }
 });
 
-// apex.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:3000';
+apex.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:3000';
 // apex.defaults.hideSensitiveHeaders = false;
 
 export const appAx = apex

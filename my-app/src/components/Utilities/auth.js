@@ -1,5 +1,4 @@
 import jwtDecode from "jwt-decode";
-import Cookies from "js-cookie";
 
 export const isAuthenticated = () => {
   const token = getToken();
@@ -7,43 +6,28 @@ export const isAuthenticated = () => {
 };
 
 export const getToken = () => {
-  // const token = localStorage.getItem('accessToken');
-  const jwt = Cookies.get("jwt");
-
+  const jwt = localStorage.getItem('jwt');
+  
   if (jwt) {
-    // const decodedJwt = jwtDecode(jwt);
-    // const { exp } = decodedJwt;
-    // const currentTime = Date.now() / 1000;
-
-    // if (exp < currentTime) {
-    //   return localStorage.removeItem('accessToken');
-
-    // }
 
     if (isExpired(jwt) === true) {
-      Cookies.remove("jwt");
+      localStorage.removeItem('jwt');
       return null;
     }
 
-    return jwt;
-    // return JSON.parse(localStorage.getItem('accessToken'));
+    return JSON.parse(jwt);
+    
   }
   return jwt;
 };
 
 export const setToken = (jwt) => {
   if (jwt) {
-    // localStorage.setItem('jwt', JSON.stringify(token));
-    // Cookies.set('hi', "hello")s
-    Cookies.set("jwt", jwt, {
-      sameSite: "strict",
-      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      path: "/",
-    });
+    localStorage.setItem('jwt', JSON.stringify(jwt));
   }
-  // else {
-  //   localStorage.removeItem('accessToken');
-  // }
+  else {
+    localStorage.removeItem('jwt');
+  }
 };
 
 // export const setRefreshToken = (token) => {
@@ -83,7 +67,7 @@ export const decodeToken = (jwt) => {
 // };
 
 export const logout = () => {
-  Cookies.remove("jwt");
+  localStorage.removeItem('jwt')
 };
 
 // export const checkAuth = (store) => {
@@ -97,10 +81,3 @@ export const logout = () => {
 //     }
 //   }
 // };
-// export const setToken = (token) => {
-//     if (token) {
-//       localStorage.setItem('accessToken', JSON.stringify(token));
-//     } else {
-//       localStorage.removeItem('accessToken');
-//     }
-//   };

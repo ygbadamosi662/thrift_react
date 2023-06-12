@@ -1,10 +1,15 @@
 import React from "react";
+import { useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikControl from "./FormikControl";
 import { appAx, setAuthJwt } from "./AppAxios";
 import { useMutation } from "react-query";
 import { setToken, getToken } from "./Utilities/auth";
+import { useNavigate } from "react-router-dom";
+import { connect } from "react-redux";
+import { logUser } from "../Redux/user/userActions";
+
 
 
 const styles = {
@@ -15,16 +20,31 @@ const styles = {
   },
 };
 
-const logUser = (user) => {
-  // console.log(user)
+const loginUser = (user) => {
   return appAx.post("http://127.0.0.1:8080/api/v1/user/auth/login", user);
 };
 
-function LoginForm() {
-  const {mutate: LoggedIn,isLoading,isError,error,data,} = useMutation(logUser);
+function LoginForm(props) {
+  const {reduxLogUser, reduxEmail} = props;
+
+  const {mutate: LoggedIn,isLoading,isError,error,data,} = useMutation(loginUser);
+
+  const navigate = useNavigate();
+
+  const toHome = () => {
+    navigate('/home');
+  }
+
+  useEffect(() => {
+    if (data?.status === 200) {
+      setToken(data?.data.jwt);
+      reduxLogUser(data?.data);
+      toHome();
+    }
+  }, [data, reduxLogUser, toHome]);
 
   const initVal = {
-    email: "",
+    email: reduxEmail,
     password: "",
   };
 
@@ -33,6 +53,18 @@ function LoginForm() {
     email: Yup.string().email("Email not valid!").required("Required"),
     password: Yup.string().required("Required"),
   });
+
+  
+
+  const onSubmit = (values) => {
+    const { email, password } = values;
+    const user = {
+      email: email,
+      password: password,
+    };
+
+    LoggedIn(user);
+  };
 
   if(isLoading)
   {
@@ -44,18 +76,16 @@ function LoginForm() {
     console.log(error)
   }
 
-  const onSubmit = (values) => {
-    const { email, password } = values;
-    const user = {
-      email: email,
-      password: password,
-    };
-    LoggedIn(user);
-    setToken(data?.data.jwt)
-    
-  };
   
 
+  // if(data?.status === 200)
+  // {
+  //   setToken(data?.data.jwt)
+  //   reduxLogUser(data?.data)
+  //   toHome();
+  // }
+
+  
   return (
     <Formik
       onSubmit={onSubmit}
@@ -91,4 +121,17 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+const mapStateToProps = state => {
+  return {
+    // reduxUser: state.user.user,
+    reduxEmail: state.user.email
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    reduxLogUser: (user) => dispatch(logUser(user))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

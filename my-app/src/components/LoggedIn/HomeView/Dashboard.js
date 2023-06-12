@@ -2,10 +2,13 @@ import React from 'react'
 import Thrifts from './Ajors/Thrifts'
 import Dos from './SideShow/Dos'
 
-function Dashboard() {
+
+function Dashboard({em}) {
+
   return (
+
     <div>
-        <Thrifts/>
+        <Thrifts em={em}/>
         <Dos/>
     </div>
   )
