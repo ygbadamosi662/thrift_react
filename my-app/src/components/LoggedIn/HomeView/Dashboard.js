@@ -1,15 +1,20 @@
 import React from 'react'
 import Thrifts from './Ajors/Thrifts'
-import Dos from './SideShow/Dos'
 
 
-function Dashboard({em}) {
+const stylex = {
+  dBoard: {
+    display: 'flex',
+    gap: '2rem'   
+  }
+}
+function Dashboard() {
 
   return (
 
-    <div>
-        <Thrifts em={em}/>
-        <Dos/>
+    <div style={stylex.dBoard}>
+        <Thrifts />
+        {/* <Dos /> */}
     </div>
   )
 }

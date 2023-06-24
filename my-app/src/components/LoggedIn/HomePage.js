@@ -7,15 +7,18 @@ import { getToken } from '../Utilities/auth.js'
 import { connect } from "react-redux";
 
 
+const stylex = {
+  position: 'relative'
+}
 
 function HomePage({reduxUser}) {
   const jwt = getToken();
   setAuthJwt(jwt);
   
   return (
-    <div>
+    <div style={stylex}>
       <Navi/>
-      <Dashboard em={reduxUser.email}/>  
+      <Dashboard />  
       <Footer/>
       <div>{reduxUser.fname}</div>
     </div>

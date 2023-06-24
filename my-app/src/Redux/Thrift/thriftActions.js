@@ -1,4 +1,4 @@
-import { SET_THRIFTS, SET_THRIFT } from "./thriftTypes";
+import { SET_THRIFTS, SET_TICKET } from "./thriftTypes";
 
 export const setThrifts = (payload = {}) => {
     return {
@@ -7,10 +7,9 @@ export const setThrifts = (payload = {}) => {
     }
 }
 
-export const setThrift = (thrift = {}, mOl = '') => {
+export const setTicket = (tic = '') => {
     return {
-        type: SET_THRIFT,
-        thri: thrift,
-        mol: mOl
+        type: SET_TICKET,
+        ticket: tic
     }
 }

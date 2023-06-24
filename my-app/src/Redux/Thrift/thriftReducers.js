@@ -1,9 +1,8 @@
-import { SET_THRIFTS, SET_THRIFT } from "./thriftTypes";
+import { SET_THRIFTS, SET_TICKET } from "./thriftTypes";
 
 const initState = {
     thrifts: {},
-    thrift: {},
-    MoL: 'LESS'
+    ticket: ''
 }
 
 export const thriftReducer = (state = initState, action) => {
@@ -13,10 +12,9 @@ export const thriftReducer = (state = initState, action) => {
             thrifts: action.thrifts
         }
 
-        case SET_THRIFT: return {
+        case SET_TICKET: return {
             ...state,
-            thrift: action.thri,
-            MoL: action.mol
+            ticket: action.ticket
         }
         
         default: return state

@@ -3,10 +3,11 @@ import { useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikControl from "./FormikControl";
-import {appAx, setAuthJwt} from './AppAxios'
+import {setAuthJwt} from './AppAxios'
 import { useMutation } from "react-query";
 import { connect } from "react-redux";
 import { logEmail } from "../Redux/user/userActions";
+import { registerUser } from "./ApiCalls";
 
 const styles = {
   form: {
@@ -18,14 +19,10 @@ const styles = {
 }
 
 
-const postUser = (user) => {
-  return appAx.post('http://127.0.0.1:8080/api/v1/user/auth/register', user)
-}
-
 function RegisterForm(props) {
   const {reduxLogEmail, goL} = props;
   
-  const {mutate: addUser, isLoading, isError, error, data} = useMutation(postUser)
+  const {mutate: addUser, isLoading, isError, error, data} = useMutation(registerUser)
 
   useEffect(() => {
     if (data?.status === 200) {

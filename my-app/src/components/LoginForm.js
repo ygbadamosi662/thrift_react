@@ -3,12 +3,12 @@ import { useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikControl from "./FormikControl";
-import { appAx, setAuthJwt } from "./AppAxios";
 import { useMutation } from "react-query";
-import { setToken, getToken } from "./Utilities/auth";
+import { setToken } from "./Utilities/auth";
 import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { logUser } from "../Redux/user/userActions";
+import { loginUser } from "./ApiCalls";
 
 
 
@@ -20,9 +20,6 @@ const styles = {
   },
 };
 
-const loginUser = (user) => {
-  return appAx.post("http://127.0.0.1:8080/api/v1/user/auth/login", user);
-};
 
 function LoginForm(props) {
   const {reduxLogUser, reduxEmail} = props;
@@ -41,7 +38,7 @@ function LoginForm(props) {
       reduxLogUser(data?.data);
       toHome();
     }
-  }, [data, reduxLogUser, toHome]);
+  }, [data, reduxLogUser]);
 
   const initVal = {
     email: reduxEmail,

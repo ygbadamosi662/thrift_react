@@ -3,9 +3,8 @@ import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
 import Landlord from "./Landlord";
 import {useQuery} from 'react-query'
-import {appAx} from "./AppAxios";
-import { connect } from "react-redux";
-import { logUser } from "../Redux/user/userActions";
+import {fetchHome} from './ApiCalls'
+
 
 const stylez = (clas) => {
   return {
@@ -53,19 +52,14 @@ function LandingPage({ initChoice }) {
     }
   };
 
-  const fetch = () => {
-    return appAx.post('http://127.0.0.1:8080/api/v1/user/home')
-  }
-
+  
   const onRegOk = () => {
-    // setEm(emi)
     setChoice(false)
   }
   
   const [choice, setChoice] = useState(initChoice);
-  // const [em, setEm] = useState("");
 
-  const {isError, isLoading, data} = useQuery('home', fetch);
+  const {isError, isLoading, data} = useQuery('home', fetchHome);
   
   return (
     <div className="landPage" style={landStyle}>

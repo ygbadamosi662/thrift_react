@@ -1,0 +1,13 @@
+write getMembers, getHub and getPot to return data in pages in the backend #done
+
+search endpoint and getThrift endpoint are now implemented on the backend #done
+
+check if user is a member to a thrift to know the depth of the thrift information to return #done
+
+write an endpoint to return the capacity of a thrift #done
+
+write a controller for organizer in the backend
+
+search returns thrift for any firls letter or number typed in d search bar, problem not from backend ive checked #solved
+
+write page navigation for all render that requires it

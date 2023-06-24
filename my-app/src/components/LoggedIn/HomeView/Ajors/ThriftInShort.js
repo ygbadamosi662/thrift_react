@@ -1,17 +1,22 @@
 import React from 'react'
 import { connect } from "react-redux";
-import { setThrift } from "../../../../Redux/Thrift/thriftActions";
+import { useNavigate } from "react-router-dom";
+import { setTicket } from "../../../../Redux/Thrift/thriftActions";
 
 
 const thriftStyle = {
   display: 'flex',
-  justifyContent: 'space-between',
+  gap: '4rem',
   padding: '1rem'
 }
-function Thrift({thrift, reduxSetThrift}) {
+
+function ThriftInShort({thrift, reduxSetTicket}) {
+  const navigate = useNavigate();
 
   const handleMore = () => {
-    reduxSetThrift(thrift, 'MORE')
+    reduxSetTicket(thrift.ticket);
+    navigate("Thrift");
+
   }
   
   return (
@@ -29,8 +34,8 @@ function Thrift({thrift, reduxSetThrift}) {
 
 const mapDispatchToProps = dispatch => {
   return {
-    reduxSetThrift: (thri, mOl) => dispatch(setThrift(thri, mOl))
+    reduxSetTicket: (ticket) => dispatch(setTicket(ticket))
   }
 }
 
-export default connect(null, mapDispatchToProps)(Thrift);
+export default connect(null, mapDispatchToProps)(ThriftInShort);

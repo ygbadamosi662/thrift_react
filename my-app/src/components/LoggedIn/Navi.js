@@ -1,23 +1,30 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import Search from './Search/Search'
 
+
+const stylex = {
+    height: '5rem',
+    backgroundColor: 'orange',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    // gap: '1rem'
+}
+
+const homeStyle = {
+    textDecoration: 'none',
+    fontWeight: 'bold'
+}
 
 function Navi() {
-    const getActive = ({isActive}) => {
-        return {
-            fontWeight: isActive ? 'bold' : 'normal' 
-        }
-    }
-    const handleClick = event => {
-        alert('brazyyyyyy')
-    }
+    
   return (
     <nav>
-        <div>
-            <NavLink to='' style={getActive}>Dashboard</NavLink>
-            <NavLink to='' style={getActive}>Profile</NavLink>
+        <div style={stylex}>
+            <NavLink to='/home' style={homeStyle} >Home</NavLink>
+            <Search/>
         </div>
-        <button onClick={handleClick} type='submit'></button>
     </nav>
   )
 }
